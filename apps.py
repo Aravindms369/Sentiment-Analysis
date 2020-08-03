@@ -1,15 +1,17 @@
-﻿import streamlit as st
+import streamlit as st
 import pandas as pd
 import numpy as np
 import plotly.express as px
 from wordcloud import WordCloud, STOPWORDS
 import matplotlib.pyplot as plt
 
+
+
 st.title("Sentiment analysis of tweets about US airlines")
 st.sidebar.title("Sentiment analysis of tweets about US airlines")
-st.markdown("This application is Streamlit dashboard to analyse sentiment of tweets ð�?¦")
-st.sidebar.markdown("This application is Streamlit dashboard to analyse sentiment of tweets ð�?¦")
-DATA_URL = ("/prjects/Sentiment-Analysis/project/Tweets.csv")
+st.markdown("This application is Streamlit dashboard to analyse sentiment of tweets 🐦")
+st.sidebar.markdown("This application is Streamlit dashboard to analyse sentiment of tweets 🐦")
+DATA_URL = ("/Users/HP/Desktop/stream/Tweets.csv")
 
 @st.cache(persist=True)
 def load_data():
@@ -37,6 +39,17 @@ if not st.sidebar.checkbox("Hide", True):
         fig = px.pie(sentiment_count, values='Tweets', names='Sentiment')
         st.plotly_chart(fig)
 
+
+
+st.sidebar.subheader("When and Where are users tweeting from?")
+hour = st.sidebar.slider("Hour of day", 0, 23)
+modified_data = data[data['tweet_created'].dt.hour == hour]
+if not st.sidebar.checkbox("Close", True, key = '1'):
+    st.markdown("###Tweets locations based on the time of date")
+    st.markdown("%i tweets between %i:00 and %i:00" % (len(modified_data), hour, (hour+1)%24))
+    st.map(modified_data)
+    if st.sidebar.checkbox("Show raw data", False):
+        st.write(modified_data)
 
 
 st.sidebar.subheader("Breakdown airline tweets by sentiment")
