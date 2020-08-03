@@ -18,7 +18,7 @@ def load_data():
     data = pd.read_csv(DATA_URL)
     data['tweet_created'] = pd.to_datetime(data['tweet_created'])
     return data
-
+#sentiment analysis section
 data = load_data()
 st.sidebar.subheader("Show random tweet")
 random_tweet = st.sidebar.radio('Sentiment', ('positive', 'neutral', 'negative'))
@@ -29,7 +29,7 @@ select = st.sidebar.selectbox('visualization type', ['Histogram', 'Pie Chart'], 
 sentiment_count = data['airline_sentiment'].value_counts()
 sentiment_count = pd.DataFrame({'Sentiment':sentiment_count.index, 'Tweets':sentiment_count.values})
 
-
+#chart section
 if not st.sidebar.checkbox("Hide", True):
     st.markdown("###Number of tweets by sentiment")
     if select == "Histogram":
@@ -40,7 +40,7 @@ if not st.sidebar.checkbox("Hide", True):
         st.plotly_chart(fig)
 
 
-
+#map section
 st.sidebar.subheader("When and Where are users tweeting from?")
 hour = st.sidebar.slider("Hour of day", 0, 23)
 modified_data = data[data['tweet_created'].dt.hour == hour]
